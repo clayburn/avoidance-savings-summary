@@ -40,6 +40,23 @@ class App : CliktCommand() {
             ).createReport(builds)
         }
 
+        val localBuilds = builds.filter { it.location == BuildLocation.LOCAL }
+        val ciBuilds = builds.filter { it.location == BuildLocation.CI }
+
+        println("# Local builds")
+        printAvoidanceTable(localBuilds)
+
+        println("")
+
+        println("# CI builds")
+        printAvoidanceTable(ciBuilds)
+
+        println("")
+
+        println("${builds.count { it.location == BuildLocation.UNKNOWN }} of unknown location")
+    }
+
+    private fun printAvoidanceTable(builds: List<BuildInfo>) {
         println(table {
             cellStyle { border = true }
             header {
@@ -58,5 +75,7 @@ class App : CliktCommand() {
                 builds.sumOf { it.transformAvoidanceSavings.fromRemoteCache ?: 0 })
         })
     }
+
+
 }
 
