@@ -43,12 +43,12 @@ class App : CliktCommand() {
         val localBuilds = builds.filter { it.location == BuildLocation.LOCAL }
         val ciBuilds = builds.filter { it.location == BuildLocation.CI }
 
-        println("# Local builds")
+        println("# Local builds (${localBuilds.size})")
         printAvoidanceTable(localBuilds)
 
         println("")
 
-        println("# CI builds")
+        println("# CI builds (${ciBuilds.size})")
         printAvoidanceTable(ciBuilds)
 
         println("")
@@ -61,9 +61,9 @@ class App : CliktCommand() {
             cellStyle { border = true }
             header {
                 row("",
-                    "Avoidance Savings (Up-to-date) (ms)",
-                    "Avoidance Savings (Local Build Cache) (ms)",
-                    "Avoidance Savings (Remote Build Cache) (ms)")
+                    "Avoidance Savings\nUp-to-date (ms)",
+                    "Avoidance Savings\nLocal Build Cache (ms)",
+                    "Avoidance Savings\nRemote Build Cache (ms)")
             }
             row("Tasks",
                 builds.sumOf { it.taskAvoidanceSavings.fromUpToDate ?: 0 },
