@@ -8,6 +8,7 @@ import com.github.ajalt.clikt.parameters.types.int
 import com.gradle.develocity.api.BuildsApi
 import com.gradle.develocity.api.client.ApiClient
 import com.jakewharton.picnic.table
+import io.github.oshai.kotlinlogging.KotlinLogging
 import java.nio.file.Paths
 import java.time.Instant
 
@@ -18,6 +19,9 @@ class App : CliktCommand() {
     private val develocityUrl by option(envvar = "DEVELOCITY_URL").required()
     private val csv by option(envvar = "CSV_FILE")
     private val days by option().int().default(7)
+    private val minutes by option().int()
+    private val maxBuildsPerQuery by option().int().default(100)
+    private val maxWaitSeconds by option().int().default(3)
 
     override fun run() {
         val now = Instant.now()
@@ -29,9 +33,13 @@ class App : CliktCommand() {
             }
         }
 
+        val startInstant = if (minutes != null) now.minutesAgo(minutes!!) else now.daysAgo(days)
+
         val builds = BuildsProcessor(
             buildsApi = buildsApi,
-        ).process(now.daysAgo(days)).map { BuildInfo(it) }
+            maxBuildsPerQuery = maxBuildsPerQuery,
+            maxWaitSeconds = maxWaitSeconds,
+        ).process(startInstant).map { BuildInfo(it) }
 
         csv?.let {
             CsvCreator(

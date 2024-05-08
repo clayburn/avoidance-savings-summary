@@ -17,6 +17,7 @@ dependencies {
     implementation("com.google.code.findbugs:jsr305:3.0.2")
     implementation("org.apache.httpcomponents.client5:httpclient5:5.3.1")
     implementation("com.jakewharton.picnic:picnic:0.7.0")
+    implementation("io.github.oshai:kotlin-logging-jvm:5.1.0")
 
     implementation("org.slf4j:slf4j-api:2.0.12")
     runtimeOnly("org.slf4j:slf4j-simple:2.0.12")

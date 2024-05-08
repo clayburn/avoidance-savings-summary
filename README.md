@@ -6,7 +6,7 @@ To build:
 ./gradlew installDist
 ```
 
-To run:
+To run (using Java 21):
 
 ```shell
 export API_KEY=your-api-key
